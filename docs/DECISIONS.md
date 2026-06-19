@@ -24,7 +24,7 @@ Estado:
 
 - Decidido.
 - Rename tecnico del paquete y CLI ejecutado en v0.2 Bloque A.
-- Pendiente renombrar el repo remoto de GitHub si se decide hacerlo desde la configuracion de GitHub.
+- Repo remoto renombrado a `capfroggy/atlasmancer`.
 
 ## 2. Modelo de producto
 

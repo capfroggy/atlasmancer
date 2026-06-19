@@ -41,7 +41,7 @@ Cambios esperados:
 - [x] Actualizar tests.
 - [x] Actualizar README.
 - [x] Actualizar docs.
-- [ ] Actualizar URLs de GitHub cuando el repo sea renombrado.
+- [x] Actualizar URLs de GitHub cuando el repo sea renombrado.
 - [x] Actualizar ejemplos de README.
 - [x] Validar `python -m unittest`.
 - [x] Validar `atlasmancer --help`.
