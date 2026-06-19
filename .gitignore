@@ -12,3 +12,8 @@ build/
 venv/
 .env
 .DS_Store
+
+# Local generated demo exports
+/world.html
+/world.md
+/world.png

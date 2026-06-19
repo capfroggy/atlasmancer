@@ -1,12 +1,12 @@
-# World Forge Roadmap
+# Atlasmancer Roadmap
 
 Estado: borrador maestro
 Idioma base del documento: espanol
-Objetivo: convertir `world-forge` en una herramienta gratuita, abierta y multilenguaje para crear mundos completos de D&D/TTRPG.
+Objetivo: convertir Atlasmancer en una herramienta gratuita, abierta y multilenguaje para crear mundos completos de D&D/TTRPG.
 
 ## 1. Vision
 
-World Forge debe evolucionar de un generador CLI de mapas a una aplicacion completa de worldbuilding para directores de juego y jugadores.
+Atlasmancer debe evolucionar de un generador CLI de mapas a una aplicacion completa de worldbuilding para directores de juego y jugadores.
 
 La promesa central:
 
@@ -78,7 +78,7 @@ Mirar herramientas existentes, pero crear una identidad propia:
 - Donjon: tablas y generadores utiles.
 - DungeonScrawl/DungeonFog/Mipui: mapas tacticos.
 
-World Forge debe diferenciarse por ser gratuito, abierto, multilenguaje, local-first y orientado a campanas completas.
+Atlasmancer debe diferenciarse por ser gratuito, abierto, multilenguaje, local-first y orientado a campanas completas.
 
 ## 3. Usuarios objetivo
 
@@ -217,7 +217,7 @@ Debe incluir:
 Estructura futura:
 
 ```text
-world-forge/
+atlasmancer/
   packages/
     engine-python/
     app-web/
@@ -299,7 +299,7 @@ Nunca depender solo de coordenadas o nombres.
 
 Cada mundo debe guardar:
 
-- Version de World Forge.
+- Version de Atlasmancer.
 - Version del schema.
 - Version del algoritmo.
 - Seed.
@@ -535,9 +535,9 @@ Crear un archivo de mundo guardable y reabrible.
 
 Features:
 
-- Comando `world-forge create`.
-- Comando `world-forge open`.
-- Comando `world-forge export`.
+- Comando `atlasmancer create`.
+- Comando `atlasmancer open`.
+- Comando `atlasmancer export`.
 - Formato `.wforge` inicial o JSON canonical.
 - Manifest con seed, version, idioma y parametros.
 - Lugares enriquecidos.
@@ -546,9 +546,9 @@ Features:
 CLI ideal:
 
 ```bash
-world-forge create --seed "salt-crown" --locale es --output salt-crown.wforge
-world-forge export salt-crown.wforge --format html --output atlas.html
-world-forge export salt-crown.wforge --format png --output map.png
+atlasmancer create --seed "salt-crown" --locale es --output salt-crown.wforge
+atlasmancer export salt-crown.wforge --format html --output atlas.html
+atlasmancer export salt-crown.wforge --format png --output map.png
 ```
 
 Criterios:
@@ -1071,7 +1071,7 @@ La siguiente meta no debe ser "crear la app completa".
 
 La siguiente meta debe ser:
 
-> World Forge v0.2: un generador local-first, bilingue, exportable y con una vision clara.
+> Atlasmancer v0.2: un generador local-first, bilingue, exportable y con una vision clara.
 
 Alcance v0.2 recomendado:
 

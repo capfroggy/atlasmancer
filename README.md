@@ -1,8 +1,8 @@
-# world-forge
+# Atlasmancer
 
-`world-forge` is a tiny deterministic fantasy world generator for terminal
-explorers, tabletop notes, writing prompts, and questionable cartography
-decisions.
+Atlasmancer is a free, open-source worldbuilding tool for tabletop campaigns.
+The current technical preview still ships as the `world-forge` Python CLI while
+the project is being renamed.
 
 Give it a seed and it creates a little world with terrain, landmarks, names, a
 legend, and exportable output.
@@ -92,13 +92,15 @@ to start making things again.
 
 ## Product Direction
 
-The long-term goal is to turn World Forge into a free, open-source, multilingual
-worldbuilding tool for D&D/TTRPG campaigns: continents, regions, countries,
-settlements, NPCs, factions, quests, dungeons, printable maps, and player-safe
-exports in one place.
+The long-term goal is to turn Atlasmancer into a multilingual campaign creation
+workspace: continents, regions, countries, settlements, NPCs, factions, quests,
+dungeons, printable maps, and player-safe exports in one place.
 
 - [Roadmap](docs/ROADMAP.md)
 - [Deployment strategy](docs/DEPLOYMENT_STRATEGY.md)
+- [Project decisions](docs/DECISIONS.md)
+- [Brand foundation](docs/BRAND.md)
+- [Rename plan](docs/RENAME_PLAN.md)
 
 ## Development
 

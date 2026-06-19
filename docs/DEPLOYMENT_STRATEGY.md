@@ -5,7 +5,7 @@ Fecha: 2026-06-19
 
 ## Decision corta
 
-World Forge debe ser:
+Atlasmancer debe ser:
 
 1. Open source en GitHub.
 2. Web app gratuita como experiencia principal.
@@ -48,7 +48,7 @@ InfinityFree ofrece cosas utiles:
 - Dominio propio o subdominio.
 - 5 GB de espacio segun su pagina de features.
 
-Pero para World Forge MVP no necesitamos PHP/MySQL.
+Pero para Atlasmancer MVP no necesitamos PHP/MySQL.
 
 Riesgos:
 
@@ -179,7 +179,7 @@ No elegir entre GitHub y web. Hacer ambos, en orden:
 
 ## Recomendacion final
 
-World Forge debe nacer como:
+Atlasmancer debe nacer como:
 
 > Open-source local-first web app.
 
