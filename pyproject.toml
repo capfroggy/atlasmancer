@@ -27,6 +27,10 @@ classifiers = [
 ]
 dependencies = []
 
+[project.optional-dependencies]
+image = ["pillow>=10,<13"]
+dev = ["build", "coverage>=7,<8", "ruff", "tox>=4,<5"]
+
 [project.urls]
 Homepage = "https://github.com/capfroggy/world-forge"
 Repository = "https://github.com/capfroggy/world-forge"

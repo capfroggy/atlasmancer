@@ -1,7 +1,8 @@
 # world-forge
 
-`world-forge` is a tiny deterministic ASCII world generator for terminal explorers,
-tabletop notes, writing prompts, and questionable fantasy cartography decisions.
+`world-forge` is a tiny deterministic fantasy world generator for terminal
+explorers, tabletop notes, writing prompts, and questionable cartography
+decisions.
 
 Give it a seed and it creates a little world with terrain, landmarks, names, a
 legend, and exportable output.
@@ -64,7 +65,15 @@ python -m world_forge --seed midnight-lantern
 world-forge --help
 world-forge --seed "salt road" --width 72 --height 28 --landmarks 10
 world-forge --format markdown --output world.md
+world-forge --format html --output world.html
 world-forge --format json --output world.json
+```
+
+For printable PNG maps:
+
+```bash
+python -m pip install -e .[image]
+world-forge --seed "dnd-campaign-01" --width 96 --height 48 --landmarks 14 --format png --output world.png
 ```
 
 Options:
@@ -72,8 +81,9 @@ Options:
 - `--seed`: make the same world again later.
 - `--width` / `--height`: control map size.
 - `--landmarks`: number of named places to place.
-- `--format`: `plain`, `ansi`, `markdown`, or `json`.
+- `--format`: `plain`, `ansi`, `markdown`, `json`, `html`, or `png`.
 - `--output`: write to a file instead of stdout.
+- `--tile-size`: pixel size for PNG map tiles.
 
 ## Why this exists
 

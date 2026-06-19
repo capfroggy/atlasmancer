@@ -124,6 +124,61 @@ ODD_RUMORS = [
     "Every seventh bridge is older than the river.",
 ]
 
+NPCS = [
+    "a tired caravan master with a perfect memory for roads",
+    "a river priest who collects forbidden maps",
+    "a masked captain looking for a missing heir",
+    "a cheerful innkeeper who hears too much",
+    "a disgraced knight guarding an unpaid debt",
+    "a young astronomer tracking an impossible star",
+    "a scarred hunter who knows the old paths",
+    "a quiet scribe carrying a sealed royal order",
+]
+
+HOOKS = [
+    "A patron offers coin for proof that the old stories are true.",
+    "Travelers vanished after following lights beyond the road.",
+    "A local leader needs neutral outsiders before a feud turns violent.",
+    "A sealed door has opened for the first time in a century.",
+    "Someone is buying maps of this place and burning every copy.",
+    "The next full moon will reveal a path that normally is not there.",
+    "A caravan arrived with no drivers and cargo from a ruined age.",
+    "The place is peaceful, but every child has drawn the same monster.",
+]
+
+SECRETS = [
+    "The ruler here is protecting an enemy spy.",
+    "The landmark is built on older stone from a lost empire.",
+    "A nearby spring is slowly changing anyone who drinks from it.",
+    "The local legend is false, but the cover-up is worse.",
+    "A hidden tunnel connects this place to another marked location.",
+    "The treasure everyone seeks is actually a prison key.",
+    "One landmark on the map does not exist unless it is being watched.",
+    "The oldest family in town serves something under the hills.",
+]
+
+DANGERS = [
+    "bandits with military discipline",
+    "restless dead that follow spoken names",
+    "a territorial beast drawn to metal",
+    "sinkholes hidden beneath moss and flowers",
+    "raiders using old border tunnels",
+    "a curse that makes compasses lie",
+    "poisonous fog rolling in from low ground",
+    "a noble house willing to start a war quietly",
+]
+
+REWARDS = [
+    "a safe route through hostile terrain",
+    "a minor magic item with a useful flaw",
+    "an alliance with a local faction",
+    "a chest of old coins and newer blackmail",
+    "the true name of a dangerous spirit",
+    "maps to another forgotten site",
+    "a loyal guide who knows the wilderness",
+    "a legal claim to land nobody wants yet",
+]
+
 
 @dataclass(frozen=True)
 class Landmark:
@@ -135,6 +190,11 @@ class Landmark:
     x: int
     y: int
     rumor: str
+    npc: str
+    hook: str
+    secret: str
+    danger: str
+    reward: str
 
 
 @dataclass(frozen=True)
@@ -159,8 +219,12 @@ class World:
             for landmark in self.landmarks:
                 lines.append(
                     f"- {landmark.symbol} {landmark.name} ({landmark.kind}) "
-                    f"at {landmark.x},{landmark.y}: {landmark.rumor}"
+                    f"at {landmark.x},{landmark.y}: {landmark.hook}"
                 )
+                lines.append(f"  NPC: {landmark.npc}")
+                lines.append(f"  Rumor: {landmark.rumor}")
+                lines.append(f"  Danger: {landmark.danger}")
+                lines.append(f"  Reward: {landmark.reward}")
         return "\n".join(lines)
 
     def render_ansi(self) -> str:
@@ -175,15 +239,25 @@ class World:
             for landmark in self.landmarks:
                 lines.append(
                     f"- {_paint(landmark.symbol)} {landmark.name} ({landmark.kind}) "
-                    f"at {landmark.x},{landmark.y}: {landmark.rumor}"
+                    f"at {landmark.x},{landmark.y}: {landmark.hook}"
                 )
+                lines.append(f"  NPC: {landmark.npc}")
+                lines.append(f"  Rumor: {landmark.rumor}")
+                lines.append(f"  Danger: {landmark.danger}")
+                lines.append(f"  Reward: {landmark.reward}")
         return "\n".join(lines)
 
     def to_markdown(self) -> str:
         landmark_lines = "\n".join(
             (
                 f"- `{landmark.symbol}` **{landmark.name}** ({landmark.kind}) "
-                f"at `{landmark.x},{landmark.y}`: {landmark.rumor}"
+                f"at `{landmark.x},{landmark.y}`\n"
+                f"  - Hook: {landmark.hook}\n"
+                f"  - NPC: {landmark.npc}\n"
+                f"  - Rumor: {landmark.rumor}\n"
+                f"  - Secret: {landmark.secret}\n"
+                f"  - Danger: {landmark.danger}\n"
+                f"  - Reward: {landmark.reward}"
             )
             for landmark in self.landmarks
         )
@@ -401,6 +475,11 @@ def _landmarks(
                 x=x,
                 y=y,
                 rumor=rng.choice(ODD_RUMORS),
+                npc=rng.choice(NPCS),
+                hook=rng.choice(HOOKS),
+                secret=rng.choice(SECRETS),
+                danger=rng.choice(DANGERS),
+                reward=rng.choice(REWARDS),
             )
         )
 

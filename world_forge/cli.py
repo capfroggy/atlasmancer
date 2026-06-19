@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 
 from .generator import generate_world
+from .renderers.html import render_html
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -25,9 +26,15 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--format",
-        choices=("plain", "ansi", "markdown", "json"),
+        choices=("plain", "ansi", "markdown", "json", "html", "png"),
         default="plain",
         help="Output format.",
+    )
+    parser.add_argument(
+        "--tile-size",
+        type=int,
+        default=12,
+        help="Pixel size for PNG tiles, from 6 to 28.",
     )
     parser.add_argument("--output", type=Path, help="Write output to a file.")
     return parser
@@ -44,10 +51,23 @@ def main(argv: list[str] | None = None) -> int:
         landmark_count=args.landmarks,
     )
 
+    if args.format == "png":
+        if not args.output:
+            parser.error("--format png requires --output")
+        from .renderers.png import render_png
+
+        try:
+            render_png(world, args.output, tile_size=args.tile_size)
+        except RuntimeError as error:
+            parser.error(str(error))
+        return 0
+
     if args.format == "json":
         output = world.to_json()
     elif args.format == "markdown":
         output = world.to_markdown()
+    elif args.format == "html":
+        output = render_html(world)
     elif args.format == "ansi":
         output = world.render_ansi()
     else:

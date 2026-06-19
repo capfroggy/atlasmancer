@@ -28,6 +28,15 @@ class GenerateWorldTests(unittest.TestCase):
         self.assertEqual(payload["seed"], "json")
         self.assertLessEqual(len(payload["landmarks"]), 4)
         self.assertIn("tiles", payload)
+        self.assertIn("hook", payload["landmarks"][0])
+
+    def test_markdown_export_is_playable(self):
+        world = generate_world(seed="playable", width=36, height=16, landmark_count=2)
+        markdown = world.to_markdown()
+
+        self.assertIn("Hook:", markdown)
+        self.assertIn("NPC:", markdown)
+        self.assertIn("Danger:", markdown)
 
 
 if __name__ == "__main__":
