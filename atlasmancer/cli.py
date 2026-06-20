@@ -6,6 +6,7 @@ import argparse
 from pathlib import Path
 import sys
 
+from .campaign_loader import CampaignLoadError, load_campaign, localize_world
 from .generator import generate_world
 from .i18n import DEFAULT_LOCALE, UnsupportedLocaleError, available_locales, load_locale
 from .renderers.html import render_html
@@ -49,6 +50,7 @@ def build_parser(locale: str = DEFAULT_LOCALE) -> argparse.ArgumentParser:
         default=12,
         help=catalog.t("cli.flags.tile_size"),
     )
+    parser.add_argument("--open", type=Path, help=catalog.t("cli.flags.open"))
     parser.add_argument("--output", type=Path, help=catalog.t("cli.flags.output"))
     return parser
 
@@ -72,13 +74,22 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
 
-    world = generate_world(
-        seed=args.seed,
-        width=args.width,
-        height=args.height,
-        landmark_count=args.landmarks,
-        locale=args.locale,
-    )
+    if args.format == "campaign" and args.audience == "player" and args.output:
+        parser.error(catalog.t("cli.errors.campaign_audience_player_not_allowed"))
+
+    if args.open:
+        try:
+            world = localize_world(load_campaign(args.open, locale=args.locale), args.locale)
+        except CampaignLoadError as error:
+            parser.error(str(error))
+    else:
+        world = generate_world(
+            seed=args.seed,
+            width=args.width,
+            height=args.height,
+            landmark_count=args.landmarks,
+            locale=args.locale,
+        )
 
     if args.format == "png":
         if not args.output:

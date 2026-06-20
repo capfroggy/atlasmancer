@@ -1,13 +1,13 @@
 {
   "meta": {
-    "schema_version": "0.2.0",
+    "schema_version": "0.3.0",
     "generator": "atlasmancer",
-    "generator_version": "0.2.0",
+    "generator_version": "0.3.0",
     "world_id": "f759f73c",
     "seed": "atlasmancer-sample",
     "locale": "en",
     "audience": "gm",
-    "created_at": "2026-06-20T02:43:07.755908+00:00",
+    "created_at": "2026-06-20T03:02:58.666430+00:00",
     "params": {
       "width": 72,
       "height": 28,

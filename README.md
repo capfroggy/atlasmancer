@@ -86,6 +86,7 @@ Options:
 - `--format`: `plain`, `ansi`, `markdown`, `campaign`, `html`, or `png` (`json` still works but is deprecated in favor of `campaign`).
 - `--locale`: `en` (default) or `es`. Translates the CLI help, the map legend, and all narrative text. Place names are never translated.
 - `--audience`: `gm` (default, full detail) or `player` — `player` strips secrets, dangers, and rewards from every export so it is safe to hand to your table.
+- `--open`: reopen a saved `campaign.json` instead of generating a new world.
 - `--output`: write to a file instead of stdout.
 - `--tile-size`: pixel size for PNG map tiles.
 
@@ -102,6 +103,17 @@ Locale catalogs live in [`locales/en.json`](locales/en.json) and [`locales/es.js
 ## Campaign export
 
 `--format campaign` produces a versioned `campaign.json` meant to outlive engine changes — see [`docs/ATLASMANCER_V0.2_SPEC.md`](docs/ATLASMANCER_V0.2_SPEC.md) section 5 for the full schema. It carries `meta` (seed, locale, audience, schema/generator versions), the map, and per-landmark `public`/`gm` blocks, plus empty `regions`/`countries`/`factions`/`quests`/`dungeons` arrays reserved for later phases of the roadmap.
+
+## Saving and reopening campaigns
+
+```bash
+atlasmancer --seed "salt-crown" --locale es --format campaign --output salt-crown.campaign.json
+atlasmancer --open salt-crown.campaign.json --format html --output atlas.html
+atlasmancer --open salt-crown.campaign.json --format html --audience player --output atlas-jugadores.html
+atlasmancer --open salt-crown.campaign.json --format png --output mapa.png
+```
+
+Campaign saves always include GM data. Use `--audience player` only when exporting player-safe copies such as HTML, Markdown, PNG, plain text, or ANSI.
 
 ## Examples
 

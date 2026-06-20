@@ -8,7 +8,7 @@ import json
 from atlasmancer import __version__ as GENERATOR_VERSION
 from atlasmancer.generator import LANDMARK_KEYS, TERRAIN_KEYS, World
 
-SCHEMA_VERSION = "0.2.0"
+SCHEMA_VERSION = "0.3.0"
 GENERATOR_NAME = "atlasmancer"
 
 RESERVED_FOR = {

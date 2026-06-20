@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 - Unreleased
+
+### Added
+
+- `--open <campaign.json>` to reopen saved campaign files and export them without regenerating from the seed.
+- Campaign loading with explicit support for schema versions `0.2.0` and `0.3.0`.
+
+### Changed
+
+- Campaign saves written to files must include GM data; `--format campaign --audience player --output <file>` is rejected to prevent accidental data loss.
+
 ## 0.2.0 - Unreleased
 
 ### Added

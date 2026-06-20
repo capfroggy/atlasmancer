@@ -10,11 +10,15 @@
       "locale": "Output language: en or es.",
       "audience": "Content audience: gm (full secrets) or player (safe to share).",
       "tile_size": "Pixel size for PNG tiles, from 6 to 28.",
+      "open": "Reopen a previously saved campaign.json instead of generating a new world.",
       "output": "Write output to a file."
     },
     "errors": {
       "png_requires_output": "--format png requires --output",
-      "unsupported_locale": "Unsupported locale '{locale}'. Available: {available}."
+      "unsupported_locale": "Unsupported locale '{locale}'. Available: {available}.",
+      "campaign_missing_gm_data": "This file has no GM data (it was exported with --audience player) and cannot be reopened as a campaign. Reopen the original GM save instead.",
+      "campaign_audience_player_not_allowed": "Campaign saves always include GM data; --audience player cannot be combined with --format campaign --output. Export another format if you need a player-safe copy.",
+      "unsupported_schema_version": "This file uses campaign schema '{version}', which this version of Atlasmancer does not support. Supported: {supported}."
     }
   },
   "format": {

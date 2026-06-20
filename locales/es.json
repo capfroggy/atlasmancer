@@ -10,11 +10,15 @@
       "locale": "Idioma de salida: en o es.",
       "audience": "Audiencia del contenido: gm (con secretos) o player (seguro para compartir).",
       "tile_size": "Tamaño en píxeles de cada celda del PNG, de 6 a 28.",
+      "open": "Reabre un campaign.json guardado en vez de generar un mundo nuevo.",
       "output": "Escribe la salida a un archivo."
     },
     "errors": {
       "png_requires_output": "--format png requiere --output",
-      "unsupported_locale": "Idioma no soportado '{locale}'. Disponibles: {available}."
+      "unsupported_locale": "Idioma no soportado '{locale}'. Disponibles: {available}.",
+      "campaign_missing_gm_data": "Este archivo no tiene datos de DM (se exportó con --audience player) y no se puede reabrir como campaña. Reabre el guardado original de DM.",
+      "campaign_audience_player_not_allowed": "Los guardados de campaña siempre incluyen datos de DM; --audience player no se puede combinar con --format campaign --output. Exporta otro formato si necesitas una copia segura para jugadores.",
+      "unsupported_schema_version": "Este archivo usa el schema de campaña '{version}', que esta versión de Atlasmancer no soporta. Soportados: {supported}."
     }
   },
   "format": {
