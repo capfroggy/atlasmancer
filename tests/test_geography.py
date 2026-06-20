@@ -76,6 +76,26 @@ class GeographyTests(unittest.TestCase):
         self.assertFalse(by_kind["grassland"].is_island)
         self.assertTrue(by_kind["forest"].is_island)
 
+    def test_small_isolated_island_under_threshold_stays_its_own_region(self):
+        tiles = [
+            "~~~~~~~~~~~~",
+            "~^^^^~~~~~~~",
+            "~^^^^~~~~~~~",
+            "~^^^^~~~~~~~",
+            "~^^^^~~~~AA~",
+            "~~~~~~~~~~~~",
+        ]
+
+        regions = _detect_regions("island-test-seed", tiles, load_locale("en"))
+        by_kind = {region.kind: region for region in regions}
+
+        self.assertEqual(len(regions), 2)
+        self.assertFalse(by_kind["forest"].is_island)
+        self.assertEqual(by_kind["forest"].tile_count, 16)
+        self.assertTrue(by_kind["mountains"].is_island)
+        self.assertLess(by_kind["mountains"].tile_count, MIN_REGION_SIZE)
+        self.assertEqual(by_kind["mountains"].tile_count, 2)
+
     def test_region_descriptions_respect_locale(self):
         world = generate_world(seed="region-locale", width=72, height=28, locale="es")
         spanish_descriptions = set(load_locale("es").content("regions"))

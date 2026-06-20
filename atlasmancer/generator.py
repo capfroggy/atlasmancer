@@ -464,21 +464,16 @@ def _detect_regions(seed: str, tiles: Sequence[Sequence[str]], catalog: LocaleCa
         if not merged:
             index = min(pending, key=lambda item: (-len(components[item].tiles), components[item].min_coord))
             component = components[index]
-            if drafts:
-                region_index = _nearest_region_to_component(component, drafts)
-                _merge_component(drafts[region_index], component)
-                component_to_region[index] = region_index
-            else:
-                tile = next(iter(component.tiles))
-                component_to_region[index] = len(drafts)
-                drafts.append(
-                    _RegionDraft(
-                        tiles=set(component.tiles),
-                        kind_counts={component.kind: len(component.tiles)},
-                        min_coord=component.min_coord,
-                        land_mass_id=mass_by_tile.get(tile, -1),
-                    )
+            tile = next(iter(component.tiles))
+            component_to_region[index] = len(drafts)
+            drafts.append(
+                _RegionDraft(
+                    tiles=set(component.tiles),
+                    kind_counts={component.kind: len(component.tiles)},
+                    min_coord=component.min_coord,
+                    land_mass_id=mass_by_tile.get(tile, -1),
                 )
+            )
             pending.remove(index)
 
     _assign_coasts(drafts, tiles)
@@ -680,21 +675,6 @@ def _nearest_region(tile: tuple[int, int], drafts: list[_RegionDraft]) -> int:
         range(len(drafts)),
         key=lambda index: (
             min(abs(x - rx) + abs(y - ry) for rx, ry in drafts[index].tiles),
-            drafts[index].min_coord,
-        ),
-    )
-
-
-def _nearest_region_to_component(component: _LandComponent, drafts: list[_RegionDraft]) -> int:
-    return min(
-        range(len(drafts)),
-        key=lambda index: (
-            min(
-                abs(cx - rx) + abs(cy - ry)
-                for cx, cy in component.tiles
-                for rx, ry in drafts[index].tiles
-            ),
-            -len(drafts[index].tiles),
             drafts[index].min_coord,
         ),
     )

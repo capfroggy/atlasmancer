@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 - Unreleased
+
+### Changed
+
+- Geography region detection and river continuity fixes may change region or river layouts for existing seeds compared with earlier versions.
+
 ## 0.3.0 - Unreleased
 
 ### Added
