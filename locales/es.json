@@ -58,7 +58,10 @@
     "audience_player_note": "Copia segura para jugadores — sin secretos de DM.",
     "printable_gm_atlas": "Atlas imprimible para DM",
     "printable_gm_map": "Mapa imprimible para DM",
-    "gm_notes_label": "Notas del DM"
+    "printable_player_atlas": "Atlas imprimible para jugadores",
+    "printable_player_map": "Mapa imprimible para jugadores",
+    "gm_notes_label": "Notas del DM",
+    "notes_label": "Notas"
   },
   "content": {
     "npcs": [

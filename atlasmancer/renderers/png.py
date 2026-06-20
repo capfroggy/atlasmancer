@@ -35,7 +35,7 @@ MARKER_FILL = {
 }
 
 
-def render_png(world: World, output: str | Path, tile_size: int = 12) -> None:
+def render_png(world: World, output: str | Path, tile_size: int = 12, audience: str = "gm") -> None:
     """Render a parchment-style printable PNG map."""
 
     try:
@@ -74,10 +74,11 @@ def render_png(world: World, output: str | Path, tile_size: int = 12) -> None:
 
     _paper_texture(draw, image_width, image_height)
 
+    map_label = catalog.t("export.printable_player_map") if audience == "player" else catalog.t("export.printable_gm_map")
     draw.text((margin, 28), world.title, fill=(54, 38, 21), font=title_font)
     draw.text(
         (margin, 66),
-        f"{catalog.t('export.seed_label')}: {world.seed} | {world.width} x {world.height} | {catalog.t('export.printable_gm_map')}",
+        f"{catalog.t('export.seed_label')}: {world.seed} | {world.width} x {world.height} | {map_label}",
         fill=(91, 69, 43),
         font=subtitle_font,
     )
@@ -91,6 +92,7 @@ def render_png(world: World, output: str | Path, tile_size: int = 12) -> None:
     _draw_compass(draw, map_x + map_width - 62, map_y + 18)
     notes_top = map_y + map_height + 30
     notes_bottom = image_height - margin - 24
+    notes_label = catalog.t("export.notes_label") if audience == "player" else catalog.t("export.gm_notes_label")
     if notes_bottom - notes_top > 90:
         _draw_notes_area(
             draw,
@@ -99,7 +101,7 @@ def render_png(world: World, output: str | Path, tile_size: int = 12) -> None:
             map_width,
             notes_bottom - notes_top,
             heading_font,
-            catalog.t("export.gm_notes_label"),
+            notes_label,
         )
 
     side_x = map_x + map_width + gap
@@ -116,6 +118,7 @@ def render_png(world: World, output: str | Path, tile_size: int = 12) -> None:
         heading_font,
         body_font,
         small_font,
+        audience,
     )
     _draw_border(draw, image_width, image_height)
 
@@ -206,6 +209,7 @@ def _draw_sidebar(
     heading_font,
     body_font,
     small_font,
+    audience: str = "gm",
 ) -> None:
     draw.text((x, y), catalog.t("export.legend_label"), fill=(54, 38, 21), font=heading_font)
     cursor_y = y + 34
@@ -231,9 +235,10 @@ def _draw_sidebar(
         for line in _wrap(f"{catalog.t('export.hook_label')}: {landmark.hook}", 48)[:2]:
             draw.text((x + 8, cursor_y), line, fill=(54, 38, 21), font=small_font)
             cursor_y += 16
-        for line in _wrap(f"{catalog.t('export.danger_label')}: {landmark.danger}", 48)[:1]:
-            draw.text((x + 8, cursor_y), line, fill=(95, 41, 32), font=small_font)
-            cursor_y += 16
+        if audience != "player":
+            for line in _wrap(f"{catalog.t('export.danger_label')}: {landmark.danger}", 48)[:1]:
+                draw.text((x + 8, cursor_y), line, fill=(95, 41, 32), font=small_font)
+                cursor_y += 16
         cursor_y += 8
         if cursor_y > max_y:
             break

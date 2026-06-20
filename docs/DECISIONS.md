@@ -70,6 +70,10 @@ Razon:
 - El soporte en espanol es menor y es una oportunidad importante para diferenciar Atlasmancer.
 - Agregar i18n tarde es caro y doloroso.
 
+Estado:
+
+- Implementado en v0.2 Bloque B: `locales/en.json`, `locales/es.json`, loader con fallback, `--locale` en CLI, catalogos de contenido con paridad EN/ES.
+
 ## 5. Roles de colaboracion
 
 Decision:
@@ -83,6 +87,13 @@ Razon:
 - Separar planificacion y ejecucion evita mezclar ideas con codigo sin control.
 - La implementacion necesita pruebas y cambios pequenos.
 - La validacion humana decide si la herramienta se siente divertida y util.
+
+Excepcion temporal (2026-06-19):
+
+- Codex se quedo sin tokens durante v0.2 Bloque C.
+- Mientras eso dure, Claude tambien ejecuta: implementa, corre tests, hace commit y push.
+- Claude sigue documentando cada bloque (archivos cambiados, desviaciones, resultado de tests) igual que lo hacia Codex, para no perder trazabilidad.
+- Cuando Codex vuelva a tener tokens, la division original de roles se retoma sin que esto quede como precedente permanente.
 
 ## 6. Propiedad intelectual
 

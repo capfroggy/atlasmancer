@@ -25,6 +25,15 @@ class RendererTests(unittest.TestCase):
         self.assertIn("Lugares destacados", html)
         self.assertIn("Leyenda", html)
 
+    def test_html_renderer_hides_gm_secrets_for_player_audience(self):
+        world = generate_world(seed="atlas", width=36, height=16, landmark_count=3)
+        html = render_html(world, audience="player")
+
+        self.assertNotIn("Secret", html)
+        self.assertNotIn("Danger", html)
+        self.assertNotIn("Reward", html)
+        self.assertIn("Player-safe copy", html)
+
     def test_cli_writes_html(self):
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / "world.html"
@@ -51,6 +60,36 @@ class RendererTests(unittest.TestCase):
                     "14",
                     "--format",
                     "png",
+                    "--output",
+                    str(output),
+                    "--tile-size",
+                    "8",
+                ]
+            )
+
+            self.assertEqual(result, 0)
+            self.assertGreater(output.stat().st_size, 1000)
+
+    def test_cli_writes_player_safe_png_when_pillow_is_installed(self):
+        try:
+            import PIL  # noqa: F401
+        except ImportError:
+            self.skipTest("Pillow is not installed")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "world-player.png"
+            result = main(
+                [
+                    "--seed",
+                    "png-player",
+                    "--width",
+                    "32",
+                    "--height",
+                    "14",
+                    "--format",
+                    "png",
+                    "--audience",
+                    "player",
                     "--output",
                     str(output),
                     "--tile-size",

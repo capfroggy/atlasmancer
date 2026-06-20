@@ -26,7 +26,7 @@ CLASS_BY_SYMBOL = {
 }
 
 
-def render_html(world: World) -> str:
+def render_html(world: World, audience: str = "gm") -> str:
     """Render a self-contained printable HTML atlas page."""
 
     catalog = load_locale(world.locale)
@@ -47,22 +47,32 @@ def render_html(world: World) -> str:
 
     landmark_cards = []
     for landmark in world.landmarks:
-        landmark_cards.append(
-            "\n".join(
+        card_lines = [
+            '<article class="landmark">',
+            f"<h3>{escape(landmark.symbol)} {escape(landmark.name)}</h3>",
+            f"<p><strong>{escape(landmark_kind_label(landmark.kind, catalog).title())}</strong> at {landmark.x}, {landmark.y}</p>",
+            f"<p><b>{escape(catalog.t('export.hook_label'))}:</b> {escape(landmark.hook)}</p>",
+            f"<p><b>{escape(catalog.t('export.npc_label'))}:</b> {escape(landmark.npc)}</p>",
+            f"<p><b>{escape(catalog.t('export.rumor_label'))}:</b> {escape(landmark.rumor)}</p>",
+        ]
+        if audience != "player":
+            card_lines.extend(
                 [
-                    '<article class="landmark">',
-                    f"<h3>{escape(landmark.symbol)} {escape(landmark.name)}</h3>",
-                    f"<p><strong>{escape(landmark_kind_label(landmark.kind, catalog).title())}</strong> at {landmark.x}, {landmark.y}</p>",
-                    f"<p><b>{escape(catalog.t('export.hook_label'))}:</b> {escape(landmark.hook)}</p>",
-                    f"<p><b>{escape(catalog.t('export.npc_label'))}:</b> {escape(landmark.npc)}</p>",
-                    f"<p><b>{escape(catalog.t('export.rumor_label'))}:</b> {escape(landmark.rumor)}</p>",
                     f"<p><b>{escape(catalog.t('export.danger_label'))}:</b> {escape(landmark.danger)}</p>",
                     f"<p><b>{escape(catalog.t('export.reward_label'))}:</b> {escape(landmark.reward)}</p>",
                     f'<p class="dm"><b>{escape(catalog.t("export.secret_label"))}:</b> {escape(landmark.secret)}</p>',
-                    "</article>",
                 ]
             )
-        )
+        card_lines.append("</article>")
+        landmark_cards.append("\n".join(card_lines))
+
+    atlas_label = catalog.t("export.printable_player_atlas") if audience == "player" else catalog.t("export.printable_gm_atlas")
+    header_lines = [
+        f"<h1>{escape(world.title)}</h1>",
+        f"<p>{escape(catalog.t('export.seed_label'))} <code>{escape(world.seed)}</code> | {world.width} x {world.height} | {escape(atlas_label)}</p>",
+    ]
+    if audience == "player":
+        header_lines.append(f'<p class="player-note">{escape(catalog.t("export.audience_player_note"))}</p>')
 
     return "\n".join(
         [
@@ -79,8 +89,7 @@ def render_html(world: World) -> str:
             "<body>",
             '<main class="page">',
             "<header>",
-            f"<h1>{escape(world.title)}</h1>",
-            f"<p>{escape(catalog.t('export.seed_label'))} <code>{escape(world.seed)}</code> | {world.width} x {world.height} | {escape(catalog.t('export.printable_gm_atlas'))}</p>",
+            *header_lines,
             "</header>",
             '<section class="layout">',
             '<section class="map-panel" aria-label="World map">',
@@ -131,6 +140,9 @@ h1 {{
 header p {{
   margin: 8px 0 14px;
   color: #5b472d;
+}}
+.player-note {{
+  font-style: italic;
 }}
 .layout {{
   display: grid;

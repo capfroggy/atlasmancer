@@ -28,14 +28,20 @@ def build_parser(locale: str = DEFAULT_LOCALE) -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--format",
-        choices=("plain", "ansi", "markdown", "json", "html", "png"),
+        choices=("plain", "ansi", "markdown", "json", "campaign", "html", "png"),
         default="plain",
-        help=catalog.t("cli.flags.format"),
+        help=f"{catalog.t('cli.flags.format')} {catalog.t('format.json_deprecated_note')}",
     )
     parser.add_argument(
         "--locale",
         default=DEFAULT_LOCALE,
         help=catalog.t("cli.flags.locale"),
+    )
+    parser.add_argument(
+        "--audience",
+        choices=("gm", "player"),
+        default="gm",
+        help=catalog.t("cli.flags.audience"),
     )
     parser.add_argument(
         "--tile-size",
@@ -80,21 +86,25 @@ def main(argv: list[str] | None = None) -> int:
         from .renderers.png import render_png
 
         try:
-            render_png(world, args.output, tile_size=args.tile_size)
+            render_png(world, args.output, tile_size=args.tile_size, audience=args.audience)
         except RuntimeError as error:
             parser.error(str(error))
         return 0
 
     if args.format == "json":
         output = world.to_json()
+    elif args.format == "campaign":
+        from .renderers.campaign import render_campaign
+
+        output = render_campaign(world, audience=args.audience)
     elif args.format == "markdown":
-        output = world.to_markdown()
+        output = world.to_markdown(audience=args.audience)
     elif args.format == "html":
-        output = render_html(world)
+        output = render_html(world, audience=args.audience)
     elif args.format == "ansi":
-        output = world.render_ansi()
+        output = world.render_ansi(audience=args.audience)
     else:
-        output = world.render_plain()
+        output = world.render_plain(audience=args.audience)
 
     if args.output:
         args.output.write_text(output + "\n", encoding="utf-8")

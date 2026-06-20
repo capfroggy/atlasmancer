@@ -119,10 +119,15 @@ TITLE_NOUNS = [
     "Wilds",
 ]
 
+DEFAULT_AUDIENCE = "gm"
+AUDIENCES = ("gm", "player")
+
+
 @dataclass(frozen=True)
 class Landmark:
     """A named point of interest placed on the map."""
 
+    id: str
     symbol: str
     name: str
     kind: str
@@ -141,6 +146,7 @@ class World:
     """Generated world data plus rendering helpers."""
 
     seed: str
+    world_id: str
     title: str
     width: int
     height: int
@@ -148,7 +154,7 @@ class World:
     landmarks: tuple[Landmark, ...]
     locale: str = DEFAULT_LOCALE
 
-    def render_plain(self) -> str:
+    def render_plain(self, audience: str = DEFAULT_AUDIENCE) -> str:
         catalog = load_locale(self.locale)
         lines = [self.title, ""]
         lines.extend(self.tiles)
@@ -164,11 +170,12 @@ class World:
                 )
                 lines.append(f"  {catalog.t('export.npc_label')}: {landmark.npc}")
                 lines.append(f"  {catalog.t('export.rumor_label')}: {landmark.rumor}")
-                lines.append(f"  {catalog.t('export.danger_label')}: {landmark.danger}")
-                lines.append(f"  {catalog.t('export.reward_label')}: {landmark.reward}")
+                if audience != "player":
+                    lines.append(f"  {catalog.t('export.danger_label')}: {landmark.danger}")
+                    lines.append(f"  {catalog.t('export.reward_label')}: {landmark.reward}")
         return "\n".join(lines)
 
-    def render_ansi(self) -> str:
+    def render_ansi(self, audience: str = DEFAULT_AUDIENCE) -> str:
         catalog = load_locale(self.locale)
         lines = [self.title, ""]
         for row in self.tiles:
@@ -185,25 +192,29 @@ class World:
                 )
                 lines.append(f"  {catalog.t('export.npc_label')}: {landmark.npc}")
                 lines.append(f"  {catalog.t('export.rumor_label')}: {landmark.rumor}")
-                lines.append(f"  {catalog.t('export.danger_label')}: {landmark.danger}")
-                lines.append(f"  {catalog.t('export.reward_label')}: {landmark.reward}")
+                if audience != "player":
+                    lines.append(f"  {catalog.t('export.danger_label')}: {landmark.danger}")
+                    lines.append(f"  {catalog.t('export.reward_label')}: {landmark.reward}")
         return "\n".join(lines)
 
-    def to_markdown(self) -> str:
+    def to_markdown(self, audience: str = DEFAULT_AUDIENCE) -> str:
         catalog = load_locale(self.locale)
-        landmark_lines = "\n".join(
-            (
+
+        def landmark_block(landmark: Landmark) -> str:
+            lines = [
                 f"- `{landmark.symbol}` **{landmark.name}** ({landmark_kind_label(landmark.kind, catalog)}) "
-                f"at `{landmark.x},{landmark.y}`\n"
-                f"  - {catalog.t('export.hook_label')}: {landmark.hook}\n"
-                f"  - {catalog.t('export.npc_label')}: {landmark.npc}\n"
-                f"  - {catalog.t('export.rumor_label')}: {landmark.rumor}\n"
-                f"  - {catalog.t('export.secret_label')}: {landmark.secret}\n"
-                f"  - {catalog.t('export.danger_label')}: {landmark.danger}\n"
-                f"  - {catalog.t('export.reward_label')}: {landmark.reward}"
-            )
-            for landmark in self.landmarks
-        )
+                f"at `{landmark.x},{landmark.y}`",
+                f"  - {catalog.t('export.hook_label')}: {landmark.hook}",
+                f"  - {catalog.t('export.npc_label')}: {landmark.npc}",
+                f"  - {catalog.t('export.rumor_label')}: {landmark.rumor}",
+            ]
+            if audience != "player":
+                lines.append(f"  - {catalog.t('export.secret_label')}: {landmark.secret}")
+                lines.append(f"  - {catalog.t('export.danger_label')}: {landmark.danger}")
+                lines.append(f"  - {catalog.t('export.reward_label')}: {landmark.reward}")
+            return "\n".join(lines)
+
+        landmark_lines = "\n".join(landmark_block(landmark) for landmark in self.landmarks)
         if not landmark_lines:
             landmark_lines = "- No landmarks survived the cartographer."
 
@@ -259,6 +270,7 @@ def generate_world(
     title = _title(seed, rng)
     return World(
         seed=seed,
+        world_id=_world_id(seed),
         title=title,
         width=width,
         height=height,
@@ -266,6 +278,10 @@ def generate_world(
         landmarks=tuple(landmarks),
         locale=locale,
     )
+
+
+def _world_id(seed: str) -> str:
+    return hashlib.sha1(seed.encode("utf-8")).hexdigest()[:8]
 
 
 def terrain_legend(catalog: LocaleCatalog | None = None) -> dict[str, str]:
@@ -432,6 +448,7 @@ def _landmarks(
         name = _unique_place_name(rng, used_names)
         landmarks.append(
             Landmark(
+                id=f"lm-{index + 1:02d}",
                 symbol=symbol,
                 name=name,
                 kind=kind,

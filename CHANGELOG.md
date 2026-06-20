@@ -2,17 +2,25 @@
 
 ## 0.2.0 - Unreleased
 
+### Added
+
+- `--locale en|es` flag with full i18n coverage of CLI help, legends, and narrative content.
+- `--audience gm|player` flag. `player` strips secrets, dangers, and rewards from every text, HTML, PNG, and campaign export.
+- `--format campaign`, producing a versioned, portable `campaign.json` (see `docs/ATLASMANCER_V0.2_SPEC.md` section 5) with stable landmark `id`s, a `world_id` derived from the seed, and reserved `regions`/`countries`/`factions`/`quests`/`dungeons` arrays for future phases.
+
 ### Changed
 
 - Renamed the project from `world-forge` to **Atlasmancer**.
 - Renamed the Python package from `world_forge` to `atlasmancer`.
 - Renamed the CLI command from `world-forge` to `atlasmancer`.
 - Expanded NPC and rumor content banks; flavor text for existing seeds may change as a result.
+- `--format json` is deprecated in favor of `--format campaign`; it still works unchanged.
 
 ### Breaking
 
 - `world-forge` is no longer installed as a console command.
 - `python -m world_forge` is replaced by `python -m atlasmancer`.
+- `Landmark` and `World` gained required `id`/`world_id` fields; code constructing these dataclasses directly (not via `generate_world`) must be updated.
 
 ## 0.1.0
 

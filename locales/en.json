@@ -58,7 +58,10 @@
     "audience_player_note": "Player-safe copy — no GM secrets included.",
     "printable_gm_atlas": "Printable GM atlas",
     "printable_gm_map": "Printable GM map",
-    "gm_notes_label": "GM Notes"
+    "printable_player_atlas": "Printable player atlas",
+    "printable_player_map": "Printable player map",
+    "gm_notes_label": "GM Notes",
+    "notes_label": "Notes"
   },
   "content": {
     "npcs": [

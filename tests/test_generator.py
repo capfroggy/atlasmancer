@@ -38,6 +38,38 @@ class GenerateWorldTests(unittest.TestCase):
         self.assertIn("NPC:", markdown)
         self.assertIn("Danger:", markdown)
 
+    def test_player_audience_hides_gm_only_fields(self):
+        world = generate_world(seed="playable", width=36, height=16, landmark_count=2)
+
+        markdown = world.to_markdown(audience="player")
+        self.assertIn("Hook:", markdown)
+        self.assertIn("NPC:", markdown)
+        self.assertNotIn("Secret:", markdown)
+        self.assertNotIn("Danger:", markdown)
+        self.assertNotIn("Reward:", markdown)
+
+        plain = world.render_plain(audience="player")
+        self.assertNotIn("Danger:", plain)
+        self.assertNotIn("Reward:", plain)
+
+        ansi = world.render_ansi(audience="player")
+        self.assertNotIn("Danger:", ansi)
+        self.assertNotIn("Reward:", ansi)
+
+    def test_gm_audience_keeps_full_detail_by_default(self):
+        world = generate_world(seed="playable", width=36, height=16, landmark_count=2)
+
+        self.assertIn("Secret:", world.to_markdown())
+        self.assertIn("Danger:", world.render_plain())
+        self.assertIn("Reward:", world.render_ansi())
+
+    def test_landmarks_have_stable_unique_ids(self):
+        world = generate_world(seed="ids", width=36, height=16, landmark_count=5)
+
+        ids = [landmark.id for landmark in world.landmarks]
+        self.assertEqual(ids, [f"lm-{index + 1:02d}" for index in range(len(world.landmarks))])
+        self.assertEqual(len(ids), len(set(ids)))
+
 
 if __name__ == "__main__":
     unittest.main()
